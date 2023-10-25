@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="geforex">
+		<class>model.AuditFor000Documentostipo</class>
+		<class>model.AuditFor000Especy</class>
+		<class>model.AuditFor000Expediente</class>
+		<class>model.AuditFor000Expedientesagente</class>
+		<class>model.AuditFor000Expedientesdocumento</class>
+		<class>model.AuditFor000Expedientesestado</class>
+		<class>model.AuditFor000Expedienteshistorial</class>
+		<class>model.AuditFor000Expedientesparcela</class>
+		<class>model.AuditFor000Expedientestipo</class>
+		<class>model.AuditFor000Expedientesviassaca</class>
+		<class>model.AuditFor000Finca</class>
+		<class>model.AuditFor000Municipiossigpac</class>
+		<class>model.AuditFor000Registrosentrada</class>
+		<class>model.AuditFor000Tiposactuacione</class>
+		<class>model.For000Documentostipo</class>
+		<class>model.For000Epedientesestado</class>
+		<class>model.For000Especy</class>
+		<class>model.For000Expediente</class>
+		<class>model.For000Expedientesagente</class>
+		<class>model.For000Expedientesdocumento</class>
+		<class>model.For000Expedientesestado</class>
+		<class>model.For000Expedienteshistorial</class>
+		<class>model.For000Expedientesparcela</class>
+		<class>model.For000Expedientestipo</class>
+		<class>model.For000Expedientesviassaca</class>
+		<class>model.For000Finca</class>
+		<class>model.For000Municipiossigpac</class>
+		<class>model.For000Registrosentrada</class>
+		<class>model.For000Tiposactuacione</class>
+		<class>model.For000Usuario</class>
+		<class>model.For000Expedientesdocumentos</class>
+		<class>model.For000Documentostipos</class>
+		<class>model.For000Especies</class>
+		<class>model.For000Expedientesparcelas</class>
+		<class>model.For000Tiposactuaciones</class>
+		<class>model.For000Solicitante</class>
+		<class>model.For000Solicitantes</class>
+		<class>model.For000Representantes</class>
+		<class>model.For000Expedientes</class>
+		<class>model.For000Domicilios</class>
+		<class>model.For000ExpedientesfincaS</class>
+		<class>model.For000Poblacione</class>
+		<class>model.For000Provincia</class>
+		<class>model.For000Expedientesfincas</class>
+		<class>model.For000Provincias</class>
+		<class>model.For000Poblaciones</class>
+		<class>model.For000Domiciliostipo</class>
+		<class>model.For000Domiciliostipos</class>
+		<class>model.For000Serviciosterritoriales</class>
+		<class>model.For000Actividadestipos</class>
+		<class>model.For000Actividades</class>
+		<class>model.For000Actividadessubtipo</class>
+	</persistence-unit>
+</persistence>

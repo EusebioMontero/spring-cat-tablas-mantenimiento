@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+D:\workSpaceGeforexMySql\geforex\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2393563997.index
+916883198.index
