@@ -1,12 +1,16 @@
 package com.forestales.geforex.controlador;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,7 @@ import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/dot")
+@CrossOrigin(origins = "http://localhost:4201")
 public class DocumentosTiposControlador {
 
     @Autowired
@@ -32,7 +37,7 @@ public class DocumentosTiposControlador {
         try {
             List<For000Documentostipos> items = new ArrayList<For000Documentostipos>();
 
-            repository.findAll().forEach(items::add);
+            repository.findAll(Sort.by(Sort.Direction.ASC, "dotTipodocumentoid")).forEach(items::add);
 
             if (items.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,9 +59,18 @@ public class DocumentosTiposControlador {
         }
     }
 
-    @PostMapping
+    @PostMapping("/nuevo")
     public ResponseEntity<For000Documentostipos> create(@RequestBody For000Documentostipos item) {
         try {
+
+            String usuario = "usuarioAct";
+            BigDecimal operacion = new BigDecimal("2.0");
+            Timestamp fecha = new Timestamp(System.currentTimeMillis());
+
+            item.setDotUsuario(usuario);
+            item.setDotOperacion(operacion);
+            item.setDotFecha(fecha);
+
             For000Documentostipos savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -66,13 +80,22 @@ public class DocumentosTiposControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Documentostipos> update(@PathVariable("id") Long id,
-            @RequestBody For000Documentostipos expedientesEstados) {
+            @RequestBody For000Documentostipos for000Documentostipos) {
+        // se recuperará del servicio de login
+        String usuario = "usuarioAct";
+        BigDecimal operacion = new BigDecimal("2.0");
+        Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Documentostipos> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             For000Documentostipos existingItem = existingItemOptional.get();
             System.out
                     .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             // existingItem.setSomeField(item.getSomeField());
+            existingItem = for000Documentostipos;
+            existingItem.setDotUsuario(usuario);
+            existingItem.setDotOperacion(operacion);
+            existingItem.setDotFecha(fecha);
+
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

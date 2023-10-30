@@ -18,8 +18,8 @@ public class For000Expedientes implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_EXPEDIENTES_EXPEXPEDIENTEID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTES_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_EXPEDIENTES_EXPEXPEDIENTEID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_EXPEDIENTES_EXPEXPEDIENTEID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_EXPEDIENTES_EXPEXPEDIENTEID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTES_SEQ", allocationSize = 1)
 	@Column(name = "EXP_EXPEDIENTEID")
 	private long expExpedienteid;
 

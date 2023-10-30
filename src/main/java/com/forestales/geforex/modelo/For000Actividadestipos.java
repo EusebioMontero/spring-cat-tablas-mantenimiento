@@ -18,10 +18,10 @@ public class For000Actividadestipos implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_ACTIVIDADESTIPOS_ID_GENERATOR", sequenceName = "FOR_000_ACTIVIDADESTIPOS_SEQ")
-	// @GeneratedValue(strategy=GenerationType.SEQUENCE,
-	// generator="FOR_000_ACTIVIDADESTIPOS_ID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_ACTIVIDADESTIPOS_ID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_ACTIVIDADESTIPOS_ID_GENERATOR", sequenceName = "FOR_000_ACTIVIDADESTIPOS_SEQ", allocationSize = 1)
 	@Column(name = "ATI_ACTIVIDADTIPOID")
-	private Long id;
+	private Long atiActividadtipoid;
 
 	@Column(name = "ATI_DESCRIPCION")
 	private String atiDescripcion;
@@ -35,19 +35,15 @@ public class For000Actividadestipos implements Serializable {
 	@Column(name = "ATI_USUARIO")
 	private String atiUsuario;
 
-	// bi-directional many-to-one association to For000Actividadessubtipos
-	@OneToMany(mappedBy = "for000Actividadestipo")
-	private List<For000Actividadessubtipos> for000Actividadessubtipos;
-
 	public For000Actividadestipos() {
 	}
 
-	public Long getId() {
-		return this.id;
+	public Long getAtiActividadtipoid() {
+		return atiActividadtipoid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setAtiActividadtipoid(Long atiActividadtipoid) {
+		this.atiActividadtipoid = atiActividadtipoid;
 	}
 
 	public String getAtiDescripcion() {
@@ -80,29 +76,6 @@ public class For000Actividadestipos implements Serializable {
 
 	public void setAtiUsuario(String atiUsuario) {
 		this.atiUsuario = atiUsuario;
-	}
-
-	public List<For000Actividadessubtipos> getFor000Actividadessubtipos() {
-		return this.for000Actividadessubtipos;
-	}
-
-	public void setFor000Actividadessubtipos(List<For000Actividadessubtipos> for000Actividadessubtipos) {
-		this.for000Actividadessubtipos = for000Actividadessubtipos;
-	}
-
-	public For000Actividadessubtipos addFor000Actividadessubtipo(For000Actividadessubtipos for000Actividadessubtipo) {
-		getFor000Actividadessubtipos().add(for000Actividadessubtipo);
-		for000Actividadessubtipo.setFor000Actividadestipo(this);
-
-		return for000Actividadessubtipo;
-	}
-
-	public For000Actividadessubtipos removeFor000Actividadessubtipo(
-			For000Actividadessubtipos for000Actividadessubtipo) {
-		getFor000Actividadessubtipos().remove(for000Actividadessubtipo);
-		for000Actividadessubtipo.setFor000Actividadestipo(null);
-
-		return for000Actividadessubtipo;
 	}
 
 }

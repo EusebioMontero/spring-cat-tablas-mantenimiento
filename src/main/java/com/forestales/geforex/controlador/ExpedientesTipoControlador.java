@@ -3,6 +3,8 @@ package com.forestales.geforex.controlador;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Sort;
 
 import com.forestales.geforex.modelo.For000Expedientestipo;
-import com.forestales.geforex.modelo.For000Expedientesviassaca;
 import com.forestales.geforex.repositorio.ExpedientesTipoRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
@@ -30,69 +31,89 @@ import com.forestales.geforex.excepciones.ResourceNotFoundException;
 @CrossOrigin(origins = "http://localhost:4201")
 public class ExpedientesTipoControlador {
     @Autowired
-    ExpedientesTipoRepositorio repositorio;
+    ExpedientesTipoRepositorio repository;
 
-    @GetMapping("/hola")
-    public String mostrarHola() {
-
-        return "hola";
-
-    }
-
-    // este metodo sirve para listar todos los tipos de expedientes
     @GetMapping("/listar")
-    public List<For000Expedientestipo> listarTodosLosExpedientesTipo() {
+    public ResponseEntity<List<For000Expedientestipo>> getAll() {
+        try {
+            List<For000Expedientestipo> items = new ArrayList<For000Expedientestipo>();
 
-        List<For000Expedientestipo> listExpedientesTipos = new ArrayList<For000Expedientestipo>();
-        Sort ordenamiento = Sort.by(Sort.Direction.ASC, "extExpedientetipoid");
+            repository
+                    .findAll(
+                            Sort.by(Sort.Direction.ASC, "extExpedientetipoid"))
+                    .forEach(items::add);
 
-        listExpedientesTipos = repositorio.findAll(ordenamiento);
+            if (items.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        int tamanio = listExpedientesTipos.size();
-
-        System.out.println("tamanio" + tamanio);
-        return listExpedientesTipos;
-
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    // este metodo sirve para guardar el tipo de expediente
-    @PostMapping("/guardar")
-    public For000Expedientestipo guardarExpedientesTipo(@RequestBody For000Expedientestipo expedientesTipo) {
+    @GetMapping("/recuperar/{id}")
+    public ResponseEntity<For000Expedientestipo> getById(@PathVariable("id") Long id) {
+        Optional<For000Expedientestipo> existingItemOptional = repository.findById(id);
 
-        // expedientesTipo.setId(2L);
-        // expedientesTipo.setExtLetra("A");
-        // expedientesTipo.setExtDescripcion("sssss");
-        // expedientesTipo.setExtPlazosResolucion(1);
-
-        return repositorio.save(expedientesTipo);
-    }
-
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<For000Expedientestipo> update(@PathVariable("id") Long id,
-            @RequestBody For000Expedientestipo expedientesEstados) {
-        Optional<For000Expedientestipo> existingItemOptional = repositorio.findById(id);
         if (existingItemOptional.isPresent()) {
-            For000Expedientestipo existingItem = existingItemOptional.get();
-            System.out
-                    .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
-            // existingItem.setSomeField(item.getSomeField());
-            existingItem.setExtDescripcion("MODIFICADO");
-            return new ResponseEntity<>(repositorio.save(existingItem), HttpStatus.OK);
+            return new ResponseEntity<>(existingItemOptional.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    // este metodo sirve para eliminar un tipo de expediente
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Map<String, Boolean>> eliminarExpedienteTipo(@PathVariable Long id) {
-        For000Expedientestipo expedientesTipo = repositorio.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No existe el tipo de expediente con el ID : " + id));
+    @PostMapping("/nuevo")
+    public ResponseEntity<For000Expedientestipo> create(@RequestBody For000Expedientestipo item) {
+        try {
 
-        repositorio.delete(expedientesTipo);
-        Map<String, Boolean> respuesta = new HashMap<>();
-        respuesta.put("eliminar", Boolean.TRUE);
-        return ResponseEntity.ok(respuesta);
+            String usuario = "usuarioAct";
+            Integer operacion = 2;
+            Timestamp fecha = new Timestamp(System.currentTimeMillis());
+
+            item.setExtUsuario(usuario);
+            item.setExtOperacion(operacion);
+            item.setExtFecha(fecha);
+
+            For000Expedientestipo savedItem = repository.save(item);
+            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<For000Expedientestipo> update(@PathVariable("id") Long id,
+            @RequestBody For000Expedientestipo expedientesEstados) {
+        // se recuperará del servicio de login
+        String usuario = "usuarioAct";
+        Integer operacion = 2;
+        Timestamp fecha = new Timestamp(System.currentTimeMillis());
+        Optional<For000Expedientestipo> existingItemOptional = repository.findById(id);
+        if (existingItemOptional.isPresent()) {
+            For000Expedientestipo existingItem = existingItemOptional.get();
+            System.out
+                    .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
+            // existingItem.setSomeField(item.getSomeField());
+            existingItem = expedientesEstados;
+            existingItem.setExtUsuario(usuario);
+            existingItem.setExtOperacion(operacion);
+            existingItem.setExtFecha(fecha);
+
+            return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
+        try {
+            repository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
 }

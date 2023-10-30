@@ -3,6 +3,8 @@ package com.forestales.geforex.controlador;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +27,7 @@ import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/acti/")
-// @CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4201")
 public class ActividadesControlador {
     @Autowired
     ActividadesRepositorio repository;
@@ -57,9 +59,18 @@ public class ActividadesControlador {
         }
     }
 
-    @PostMapping
+    @PostMapping("/nuevo")
     public ResponseEntity<For000Actividades> create(@RequestBody For000Actividades item) {
         try {
+
+            String usuario = "usuarioAct";
+            BigDecimal operacion = new BigDecimal("2.0");
+            Timestamp fecha = new Timestamp(System.currentTimeMillis());
+
+            item.setActUsuario(usuario);
+            item.setActOperacion(operacion);
+            item.setActFecha(fecha);
+
             For000Actividades savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -69,13 +80,22 @@ public class ActividadesControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Actividades> update(@PathVariable("id") Long id,
-            @RequestBody For000Actividades expedientesEstados) {
+            @RequestBody For000Actividades for000Actividades) {
+        // se recuperará del servicio de login
+        String usuario = "usuarioAct";
+        BigDecimal operacion = new BigDecimal("2.0");
+        Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Actividades> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             For000Actividades existingItem = existingItemOptional.get();
             System.out
                     .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             // existingItem.setSomeField(item.getSomeField());
+            existingItem = for000Actividades;
+            existingItem.setActUsuario(usuario);
+            existingItem.setActOperacion(operacion);
+            existingItem.setActFecha(fecha);
+
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

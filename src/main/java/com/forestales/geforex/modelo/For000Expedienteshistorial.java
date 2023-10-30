@@ -17,8 +17,8 @@ public class For000Expedienteshistorial implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_EXPEDIENTESHISTORIAL_EXHEXPEDIENTEHISTORIALID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESHISTORIAL_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_EXPEDIENTESHISTORIAL_EXHEXPEDIENTEHISTORIALID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_EXPEDIENTESHISTORIAL_EXHEXPEDIENTEHISTORIALID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_EXPEDIENTESHISTORIAL_EXHEXPEDIENTEHISTORIALID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESHISTORIAL_SEQ", allocationSize = 1)
 	@Column(name = "EXH_EXPEDIENTEHISTORIALID")
 	private long exhExpedientehistorialid;
 

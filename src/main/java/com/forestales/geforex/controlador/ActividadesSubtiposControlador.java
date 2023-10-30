@@ -3,6 +3,8 @@ package com.forestales.geforex.controlador;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,9 +59,18 @@ public class ActividadesSubtiposControlador {
         }
     }
 
-    @PostMapping
+    @PostMapping("/nuevo")
     public ResponseEntity<For000Actividadessubtipos> create(@RequestBody For000Actividadessubtipos item) {
         try {
+
+            String usuario = "usuarioAct";
+            BigDecimal operacion = new BigDecimal("2.0");
+            Timestamp fecha = new Timestamp(System.currentTimeMillis());
+
+            item.setAstUsuario(usuario);
+            item.setAstOperacion(operacion);
+            item.setAstFecha(fecha);
+
             For000Actividadessubtipos savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -69,13 +80,22 @@ public class ActividadesSubtiposControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Actividadessubtipos> update(@PathVariable("id") Long id,
-            @RequestBody For000Actividadessubtipos expedientesEstados) {
+            @RequestBody For000Actividadessubtipos for000Actividadestipos) {
+        // se recuperará del servicio de login
+        String usuario = "usuarioAct";
+        BigDecimal operacion = new BigDecimal("2.0");
+        Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Actividadessubtipos> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             For000Actividadessubtipos existingItem = existingItemOptional.get();
             System.out
                     .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             // existingItem.setSomeField(item.getSomeField());
+            existingItem = for000Actividadestipos;
+            existingItem.setAstUsuario(usuario);
+            existingItem.setAstOperacion(operacion);
+            existingItem.setAstFecha(fecha);
+
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

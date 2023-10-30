@@ -20,8 +20,8 @@ public class For000Expedientesdocumento implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_EXPEDIENTESDOCUMENTOS_EXDEXPEDIENTEDOCUMENTOID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESDOCUMENTOS_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_EXPEDIENTESDOCUMENTOS_EXDEXPEDIENTEDOCUMENTOID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_EXPEDIENTESDOCUMENTOS_EXDEXPEDIENTEDOCUMENTOID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_EXPEDIENTESDOCUMENTOS_EXDEXPEDIENTEDOCUMENTOID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESDOCUMENTOS_SEQ", allocationSize = 1)
 	@Column(name = "EXD_EXPEDIENTEDOCUMENTOID")
 	private BigDecimal exdExpedientedocumentoid;
 

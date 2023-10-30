@@ -20,8 +20,8 @@ public class For000Expedientesestado implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_EXPEDIENTESESTADOS_EXEEXPEDIENTEESTADOID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESESTADOS_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_EXPEDIENTESESTADOS_EXEEXPEDIENTEESTADOID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_EXPEDIENTESESTADOS_EXEEXPEDIENTEESTADOID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_EXPEDIENTESESTADOS_EXEEXPEDIENTEESTADOID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESESTADOS_SEQ", allocationSize = 1)
 	@Column(name = "EXE_EXPEDIENTEESTADOID")
 	private long exeExpedienteestadoid;
 

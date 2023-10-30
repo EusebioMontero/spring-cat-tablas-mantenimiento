@@ -18,6 +18,7 @@ public class For000Actividadessubtipos implements Serializable {
 	@Id
 	@SequenceGenerator(name = "FOR_000_ACTIVIDADESSUBTIPOS_ID_GENERATOR", sequenceName = "FOR_000_ACTIVIDADESSUBTIPOS_SEQ")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_ACTIVIDADESSUBTIPOS_ASTACTIVIDADSUBTIPOID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_ACTIVIDADESSUBTIPOS_ASTACTIVIDADSUBTIPOID_GENERATOR", sequenceName = "FOR_000_ACTIVIDADESSUBTIPOS_SEQ", allocationSize = 1)
 	@Column(name = "AST_ACTIVIDADSUBTIPOID")
 	private long astActividadsubtipoid;
 

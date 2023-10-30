@@ -17,8 +17,8 @@ public class For000Expedientesagente implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_EXPEDIENTESAGENTES_EXAEXPEDIENTEAGENTEID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESAGENTES_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_EXPEDIENTESAGENTES_EXAEXPEDIENTEAGENTEID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_EXPEDIENTESAGENTES_EXAEXPEDIENTEAGENTEID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_EXPEDIENTESAGENTES_EXAEXPEDIENTEAGENTEID_GENERATOR", sequenceName = "FOR_000_EXPEDIENTESAGENTES_SEQ", allocationSize = 1)
 	@Column(name = "EXA_EXPEDIENTEAGENTEID")
 	private long exaExpedienteagenteid;
 

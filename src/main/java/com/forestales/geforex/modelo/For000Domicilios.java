@@ -17,8 +17,8 @@ public class For000Domicilios implements Serializable {
 
 	@Id
 	@SequenceGenerator(name = "FOR_000_DOMICILIOS_DOMDOMICILIOID_GENERATOR", sequenceName = "FOR_000_DOMICILIOS_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_DOMICILIOS_DOMDOMICILIOID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_DOMICILIOS_DOMDOMICILIOID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_DOMICILIOS_DOMDOMICILIOID_GENERATOR", sequenceName = "FOR_000_DOMICILIOS_SEQ", allocationSize = 1)
 	@Column(name = "DOM_DOMICILIOID")
 	private long domDomicilioid;
 

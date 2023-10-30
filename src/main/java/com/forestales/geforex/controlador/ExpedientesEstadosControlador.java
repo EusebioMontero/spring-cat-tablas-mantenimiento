@@ -1,12 +1,15 @@
 package com.forestales.geforex.controlador;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/exe")
+@CrossOrigin(origins = "http://localhost:4201")
 public class ExpedientesEstadosControlador {
 
     @Autowired
@@ -32,7 +36,7 @@ public class ExpedientesEstadosControlador {
         try {
             List<For000Expedientesestado> items = new ArrayList<For000Expedientesestado>();
 
-            repository.findAll().forEach(items::add);
+            repository.findAll(Sort.by(Sort.Direction.ASC, "exeExpedienteestadoid")).forEach(items::add);
 
             if (items.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,9 +58,18 @@ public class ExpedientesEstadosControlador {
         }
     }
 
-    @PostMapping("/guardar")
+    @PostMapping("/nuevo")
     public ResponseEntity<For000Expedientesestado> create(@RequestBody For000Expedientesestado item) {
         try {
+
+            String usuario = "usuarioAct";
+            Integer operacion = 2;
+            Timestamp fecha = new Timestamp(System.currentTimeMillis());
+
+            item.setExeUsuario(usuario);
+            item.setExeOperacion(operacion);
+            item.setExeFecha(fecha);
+
             For000Expedientesestado savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -67,13 +80,21 @@ public class ExpedientesEstadosControlador {
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Expedientesestado> update(@PathVariable("id") Long id,
             @RequestBody For000Expedientesestado expedientesEstados) {
+        // se recuperará del servicio de login
+        String usuario = "usuarioAct";
+        Integer operacion = 2;
+        Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Expedientesestado> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             For000Expedientesestado existingItem = existingItemOptional.get();
-            existingItem.setExeDescripcion("MODIFICADO");
             System.out
                     .println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             // existingItem.setSomeField(item.getSomeField());
+            existingItem = expedientesEstados;
+            existingItem.setExeUsuario(usuario);
+            existingItem.setExeOperacion(operacion);
+            existingItem.setExeFecha(fecha);
+
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
