@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,12 @@ import com.forestales.geforex.repositorio.ExpedientesViasSacaRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/evs/")
-// @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/tablas/evs")
 public class ExpedientesViasSacaControlador {
     @Autowired
     ExpedientesViasSacaRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Expedientesviassaca>> getAll() {
         try {

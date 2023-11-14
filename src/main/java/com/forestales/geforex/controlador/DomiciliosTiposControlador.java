@@ -8,31 +8,24 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Domiciliostipos;
 import com.forestales.geforex.repositorio.DomiciliosTiposRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/dot1/")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/dot1")
 public class DomiciliosTiposControlador {
     @Autowired
     DomiciliosTiposRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Domiciliostipos>> getAll() {
         try {
@@ -61,10 +54,10 @@ public class DomiciliosTiposControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Domiciliostipos> create(@RequestBody For000Domiciliostipos item) {
+    public ResponseEntity<For000Domiciliostipos> create(@RequestBody For000Domiciliostipos item, @RequestHeader String Authorization) {
         try {
 
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             BigDecimal operacion = new BigDecimal("2.0");
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -81,9 +74,9 @@ public class DomiciliosTiposControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Domiciliostipos> update(@PathVariable("id") Long id,
-            @RequestBody For000Domiciliostipos for000Documentostipos) {
+            @RequestBody For000Domiciliostipos for000Documentostipos, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         BigDecimal operacion = new BigDecimal("2.0");
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Domiciliostipos> existingItemOptional = repository.findById(id);

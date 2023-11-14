@@ -20,9 +20,8 @@ public class For000Registrosentrada implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "FOR_000_REGISTROSENTRADA_REEREGISTROENTRADAID_GENERATOR", sequenceName = "FOR_000_REGISTROSENTRADA_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_REGISTROSENTRADA_REEREGISTROENTRADAID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_REGISTROSENTRADA_REEREGISTROENTRADAID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_REGISTROSENTRADA_REEREGISTROENTRADAID_GENERATOR", sequenceName = "FOR_000_REGISTROSENTRADA_SEQ", allocationSize = 1)
 	@Column(name = "REE_REGISTROENTRADAID")
 	private long reeRegistroentradaid;
 
@@ -37,11 +36,6 @@ public class For000Registrosentrada implements Serializable {
 
 	@Column(name = "REE_USUARIO")
 	private String reeUsuario;
-
-	// bi-directional many-to-one association to For000Expediente
-	@OneToMany(mappedBy = "for000Registrosentrada")
-	@JsonManagedReference
-	private List<For000Expedientes> for000Expedientes;
 
 	public For000Registrosentrada() {
 	}
@@ -84,14 +78,6 @@ public class For000Registrosentrada implements Serializable {
 
 	public void setReeUsuario(String reeUsuario) {
 		this.reeUsuario = reeUsuario;
-	}
-
-	public List<For000Expedientes> getFor000Expedientes() {
-		return this.for000Expedientes;
-	}
-
-	public void setFor000Expedientes(List<For000Expedientes> for000Expedientes) {
-		this.for000Expedientes = for000Expedientes;
 	}
 
 	// public For000Expediente addFor000Expediente(For000Expediente

@@ -5,32 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Expedientesestado;
 import com.forestales.geforex.repositorio.ExpedientesEstadosRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/exe")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/exe")
 public class ExpedientesEstadosControlador {
 
     @Autowired
     ExpedientesEstadosRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Expedientesestado>> getAll() {
         try {
@@ -59,10 +52,10 @@ public class ExpedientesEstadosControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Expedientesestado> create(@RequestBody For000Expedientesestado item) {
+    public ResponseEntity<For000Expedientesestado> create(@RequestBody For000Expedientesestado item, @RequestHeader String Authorization) {
         try {
 
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             Integer operacion = 2;
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -79,9 +72,9 @@ public class ExpedientesEstadosControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Expedientesestado> update(@PathVariable("id") Long id,
-            @RequestBody For000Expedientesestado expedientesEstados) {
+            @RequestBody For000Expedientesestado expedientesEstados, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         Integer operacion = 2;
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Expedientesestado> existingItemOptional = repository.findById(id);

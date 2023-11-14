@@ -36,15 +36,13 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/dot1/**"
-////                        ,"/crud-user/users"
-//                ).permitAll()
+//                .antMatchers("tablas/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(
+                http.addFilterBefore(
                 jwtTokenFilter(),
                 UsernamePasswordAuthenticationFilter.class);
     }

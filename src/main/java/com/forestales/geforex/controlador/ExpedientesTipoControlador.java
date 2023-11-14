@@ -8,18 +8,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Sort;
 
 import com.forestales.geforex.modelo.For000Expedientestipo;
@@ -27,12 +20,12 @@ import com.forestales.geforex.repositorio.ExpedientesTipoRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/ext/")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/ext")
 public class ExpedientesTipoControlador {
     @Autowired
     ExpedientesTipoRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Expedientestipo>> getAll() {
         try {
@@ -64,10 +57,10 @@ public class ExpedientesTipoControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Expedientestipo> create(@RequestBody For000Expedientestipo item) {
+    public ResponseEntity<For000Expedientestipo> create(@RequestBody For000Expedientestipo item, @RequestHeader String Authorization) {
         try {
 
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             Integer operacion = 2;
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -84,9 +77,9 @@ public class ExpedientesTipoControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Expedientestipo> update(@PathVariable("id") Long id,
-            @RequestBody For000Expedientestipo expedientesEstados) {
+            @RequestBody For000Expedientestipo expedientesEstados, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         Integer operacion = 2;
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Expedientestipo> existingItemOptional = repository.findById(id);

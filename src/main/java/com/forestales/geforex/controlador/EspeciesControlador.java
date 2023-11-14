@@ -6,31 +6,24 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Especies;
 import com.forestales.geforex.repositorio.EspeciesRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/esp/")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/esp")
 public class EspeciesControlador {
     @Autowired
     EspeciesRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Especies>> getAll() {
         try {
@@ -59,9 +52,9 @@ public class EspeciesControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Especies> create(@RequestBody For000Especies item) {
+    public ResponseEntity<For000Especies> create(@RequestBody For000Especies item, @RequestHeader String Authorization) {
         try {
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             BigDecimal operacion = new BigDecimal("2.0");
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -78,9 +71,9 @@ public class EspeciesControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Especies> update(@PathVariable("id") Long id,
-            @RequestBody For000Especies especieActualizada) {
+            @RequestBody For000Especies especieActualizada, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         BigDecimal operacion = new BigDecimal("2.0");
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
 

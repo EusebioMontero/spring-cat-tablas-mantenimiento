@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,13 +37,13 @@ import com.forestales.geforex.repositorio.ExpedientesRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/exp/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/tablas/exp")
 
 public class ExpedientesControlador {
     @Autowired
     ExpedientesRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Expedientes>> getAll() {
         try {

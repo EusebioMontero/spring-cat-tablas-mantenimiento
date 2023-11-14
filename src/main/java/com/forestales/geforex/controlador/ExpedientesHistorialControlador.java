@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,12 @@ import com.forestales.geforex.repositorio.ExpedientesHistorialRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/exh/")
-// @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/tablas/exh")
 public class ExpedientesHistorialControlador {
     @Autowired
     ExpedientesHistorialRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Expedienteshistorial>> getAll() {
         try {

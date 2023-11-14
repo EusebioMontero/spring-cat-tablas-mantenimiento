@@ -15,31 +15,7 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     I_UserRepository userRepository;
-
-    public Optional<List<UserEntity>> getUsers() {
-        return Optional.of(userRepository.findAll());
-    }
-
     public Optional<UserEntity> getByUserLogin(String userLogin) {
         return userRepository.findByUsuLogin(userLogin);
-    }
-
-
-    public Optional<UserEntity> getByUserId(Long id) {
-        return userRepository.findById(id);
-    }
-
-
-    public UserEntity saveUser(UserEntity user) {
-        return userRepository.save(user);
-    }
-
-    public boolean deleteUser(UserEntity user) {
-        try {
-            userRepository.delete(user);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
     }
 }

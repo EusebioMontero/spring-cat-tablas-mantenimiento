@@ -16,9 +16,8 @@ public class For000Poblaciones implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "FOR_000_POBLACIONES_POBPOBLACIONID_GENERATOR", sequenceName = "FOR_000_POBLACIONES_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_POBLACIONES_POBPOBLACIONID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_POBLACIONES_POBPOBLACIONID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_POBLACIONES_POBPOBLACIONID_GENERATOR", sequenceName = "FOR_000_POBLACIONES_SEQ", allocationSize = 1)
 	@Column(name = "POB_POBLACIONID")
 	private long pobPoblacionid;
 
@@ -31,11 +30,13 @@ public class For000Poblaciones implements Serializable {
 	@Column(name = "POB_POBLACION")
 	private String pobPoblacion;
 
-	@Column(name = "POB_PROVINCIAID")
-	private BigDecimal pobProvinciaid;
-
 	@Column(name = "POB_USUARIO")
 	private String pobUsuario;
+
+	// bi-directional many-to-one association to For000Provincias
+	@ManyToOne
+	@JoinColumn(name = "POB_PROVINCIAID")
+	private For000Provincias for000Provincias;
 
 	public For000Poblaciones() {
 	}
@@ -72,20 +73,20 @@ public class For000Poblaciones implements Serializable {
 		this.pobPoblacion = pobPoblacion;
 	}
 
-	public BigDecimal getPobProvinciaid() {
-		return this.pobProvinciaid;
-	}
-
-	public void setPobProvinciaid(BigDecimal pobProvinciaid) {
-		this.pobProvinciaid = pobProvinciaid;
-	}
-
 	public String getPobUsuario() {
 		return this.pobUsuario;
 	}
 
 	public void setPobUsuario(String pobUsuario) {
 		this.pobUsuario = pobUsuario;
+	}
+
+	public For000Provincias getFor000Provincias() {
+		return this.for000Provincias;
+	}
+
+	public void setFor000Provincias(For000Provincias for000Provincias) {
+		this.for000Provincias = for000Provincias;
 	}
 
 }

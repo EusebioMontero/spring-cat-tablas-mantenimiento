@@ -6,31 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Documentostipos;
 import com.forestales.geforex.repositorio.DocumentosTiposRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/dot")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/dot")
 public class DocumentosTiposControlador {
 
     @Autowired
     DocumentosTiposRepositorio repository;
+
+    @Autowired
+    JwtProvider jwtProvider;
 
     @GetMapping("/listar")
     public ResponseEntity<List<For000Documentostipos>> getAll() {
@@ -60,10 +55,14 @@ public class DocumentosTiposControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Documentostipos> create(@RequestBody For000Documentostipos item) {
+    public ResponseEntity<For000Documentostipos> create(@RequestBody For000Documentostipos item, @RequestHeader String Authorization){
+//        System.out.println("usuario en el token: "+jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) );
+
         try {
 
-            String usuario = "usuarioAct";
+           String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
+            System.out.println("Usuario del token: "+usuario);
+//            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             BigDecimal operacion = new BigDecimal("2.0");
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -80,9 +79,9 @@ public class DocumentosTiposControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Documentostipos> update(@PathVariable("id") Long id,
-            @RequestBody For000Documentostipos for000Documentostipos) {
+            @RequestBody For000Documentostipos for000Documentostipos, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         BigDecimal operacion = new BigDecimal("2.0");
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Documentostipos> existingItemOptional = repository.findById(id);

@@ -16,9 +16,8 @@ public class For000Provincias implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "FOR_000_PROVINCIAS_PROPROVINCIAID_GENERATOR", sequenceName = "FOR_000_PROVINCIAS_SEQ")
-	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-	// "FOR_000_PROVINCIAS_PROPROVINCIAID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOR_000_PROVINCIAS_PROPROVINCIAID_GENERATOR")
+	@SequenceGenerator(name = "FOR_000_PROVINCIAS_PROPROVINCIAID_GENERATOR", sequenceName = "FOR_000_PROVINCIAS_SEQ", allocationSize = 1)
 	@Column(name = "PRO_PROVINCIAID")
 	private long proProvinciaid;
 

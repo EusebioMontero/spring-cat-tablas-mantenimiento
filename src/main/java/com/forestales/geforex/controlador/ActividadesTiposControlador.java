@@ -8,30 +8,23 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Actividadestipos;
 import com.forestales.geforex.repositorio.ActividadesTiposRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/ati/")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/ati")
 public class ActividadesTiposControlador {
     @Autowired
     ActividadesTiposRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Actividadestipos>> getAll() {
         try {
@@ -60,10 +53,11 @@ public class ActividadesTiposControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Actividadestipos> create(@RequestBody For000Actividadestipos item) {
+    public ResponseEntity<For000Actividadestipos> create(@RequestBody For000Actividadestipos item, @RequestHeader String Authorization) {
         try {
 
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
+
             BigDecimal operacion = new BigDecimal("2.0");
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -80,9 +74,9 @@ public class ActividadesTiposControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Actividadestipos> update(@PathVariable("id") Long id,
-            @RequestBody For000Actividadestipos for000Actividadestipos) {
+            @RequestBody For000Actividadestipos for000Actividadestipos, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         BigDecimal operacion = new BigDecimal("2.0");
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Actividadestipos> existingItemOptional = repository.findById(id);

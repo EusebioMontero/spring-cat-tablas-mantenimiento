@@ -13,25 +13,25 @@ import java.util.Date;
 @Component
 public class JwtProvider {
     private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-    @Value("${jwt.secret}")
-    private String secret;
-    @Value("${jwt.expiration}")
+    @Value("${app.security.jwt.secret}")
+    private String jwtSecret;
+    @Value("${app.security.jwt.expiration}")
     private int expiration;
     public String generateToken(Authentication authentication){
         UserDetailImpl usuarioPrincipal = (UserDetailImpl) authentication.getPrincipal();
         return Jwts.builder().setSubject(usuarioPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
     public String getUserNameFromToken(String token){
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateToken(String token){
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         }catch (MalformedJwtException e){
             logger.error("token mal formado");

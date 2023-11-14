@@ -8,31 +8,24 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.forestales.geforex.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.forestales.geforex.modelo.For000Municipiossigpac;
 import com.forestales.geforex.repositorio.MunicipiosSigpacRepositorio;
 import com.forestales.geforex.excepciones.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/mus/")
-@CrossOrigin(origins = "http://localhost:4201")
+@RequestMapping("/tablas/mus")
 public class MunicipiosSigpacControlador {
     @Autowired
     MunicipiosSigpacRepositorio repository;
-
+    @Autowired
+    JwtProvider jwtProvider;
     @GetMapping("/listar")
     public ResponseEntity<List<For000Municipiossigpac>> getAll() {
         try {
@@ -65,10 +58,10 @@ public class MunicipiosSigpacControlador {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<For000Municipiossigpac> create(@RequestBody For000Municipiossigpac item) {
+    public ResponseEntity<For000Municipiossigpac> create(@RequestBody For000Municipiossigpac item, @RequestHeader String Authorization) {
         try {
 
-            String usuario = "usuarioAct";
+            String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
             BigDecimal operacion = new BigDecimal("2.0");
             Timestamp fecha = new Timestamp(System.currentTimeMillis());
 
@@ -85,9 +78,9 @@ public class MunicipiosSigpacControlador {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<For000Municipiossigpac> update(@PathVariable("id") Long id,
-            @RequestBody For000Municipiossigpac expedientesEstados) {
+            @RequestBody For000Municipiossigpac expedientesEstados, @RequestHeader String Authorization) {
         // se recuperará del servicio de login
-        String usuario = "usuarioAct";
+        String usuario = jwtProvider.getUserNameFromToken(Authorization.replace("Bearer ", "")) ;
         BigDecimal operacion = new BigDecimal("2.0");
         Timestamp fecha = new Timestamp(System.currentTimeMillis());
         Optional<For000Municipiossigpac> existingItemOptional = repository.findById(id);
