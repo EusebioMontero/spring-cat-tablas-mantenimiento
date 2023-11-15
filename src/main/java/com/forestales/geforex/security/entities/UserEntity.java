@@ -39,17 +39,17 @@ public class UserEntity {
     @Column(name = "USU_TIPO")
     private Integer usuTipo;
 
-    @Column(name = "USU_FECHA")
-    private LocalDate usuFecha;
+//    @Column(name = "USU_FECHA")
+//    private LocalDate usuFecha;
+//
+//    @Column(name = "USU_USUARIO")
+//    private String usuUsuario;
 
-    @Column(name = "USU_USUARIO")
-    private String usuUsuario;
-
-    @Column(name = "USU_MAIL")
-    private String usuMail;
-
-    @Column(name = "USU_AVATAR")
-    private String usuAvatar;
+//    @Column(name = "USU_MAIL")
+//    private String usuMail;
+//
+//    @Column(name = "USU_AVATAR")
+//    private String usuAvatar;
 
 
     @Transient
@@ -61,9 +61,9 @@ public class UserEntity {
         this.usuNombre=name;
         this.usuServicioTerritorial =0;
         this.usuTipo = 0;
-        this.usuFecha=LocalDate.now();
-        this.usuUsuario="Usuario creado por: XXX";
-        this.usuMail=email;
+//        this.usuFecha=LocalDate.now();
+//        this.usuUsuario="Usuario creado por: XXX";
+//        this.usuMail=email;
     }
 
     public List<E_UserAuthority> getRoles() {

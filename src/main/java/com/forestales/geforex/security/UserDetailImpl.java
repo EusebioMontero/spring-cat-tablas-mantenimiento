@@ -20,9 +20,9 @@ public class UserDetailImpl implements UserDetails {
     private String name;
     private int territorialServiceId;
     private int type;
-    private String alterBy;
-    private LocalDate create;
-    private String mail;
+//    private String alterBy;
+//    private LocalDate create;
+//    private String mail;
     private String key;
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -33,9 +33,9 @@ public class UserDetailImpl implements UserDetails {
                 user.getUsuNombre(),
                 user.getUsuServicioTerritorial(),
                 user.getUsuTipo(),
-                user.getUsuUsuario(),
-                user.getUsuFecha(),
-                user.getUsuMail(),
+//                user.getUsuUsuario(),
+//                user.getUsuFecha(),
+//                user.getUsuMail(),
                 user.getPassword(),
                 authorities);
     }
